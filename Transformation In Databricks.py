@@ -3,14 +3,14 @@ spark
 
 # COMMAND ----------
 
-storage_account = "datalakeawstoragefor"
-application_id = "2e6a6a5f-a050-4562-ad4c-e3b557b0c463"
-directory_id = "dd518afb-3106-4b8a-a02f-352b0a7528fb"
+storage_account = "add your"
+application_id = "add your"
+directory_id = "add your"
 
 spark.conf.set(f"fs.azure.account.auth.type.{storage_account}.dfs.core.windows.net", "OAuth")
 spark.conf.set(f"fs.azure.account.oauth.provider.type.{storage_account}.dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
 spark.conf.set(f"fs.azure.account.oauth2.client.id.{storage_account}.dfs.core.windows.net", application_id)
-spark.conf.set(f"fs.azure.account.oauth2.client.secret.{storage_account}.dfs.core.windows.net", "EpS8Q~aiTselhv60T-hPHuKRIbodawjJzO9T1dwB")
+spark.conf.set(f"fs.azure.account.oauth2.client.secret.{storage_account}.dfs.core.windows.net", "Add Yours")
 spark.conf.set(f"fs.azure.account.oauth2.client.endpoint.{storage_account}.dfs.core.windows.net", f"https://login.microsoftonline.com/{directory_id}/oauth2/token")
 
 # COMMAND ----------
@@ -83,7 +83,7 @@ hostname = "m9ynko.h.filess.io"
 database = "OlisNosqlDB_collectask"
 port = "61004"
 username = "OlisNosqlDB_collectask"
-password = "fe2d67699476241da27de4ea2cd9fced92abccc9"
+password = "add your"
 
 uri = "mongodb://" + username + ":" + password + "@" + hostname + ":" + port + "/" + database
 
