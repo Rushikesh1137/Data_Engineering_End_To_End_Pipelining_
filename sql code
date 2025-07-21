@@ -1,81 +1,60 @@
 
 -- https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/develop-tables-cetas
 
--- This is auto-generated code
-SELECT
-    TOP 100 *
-FROM
-    OPENROWSET(
-        BULK 'https://synapseolistdefault.dfs.core.windows.net/synapseolistfs/customers.csv',
-        FORMAT = 'CSV',
-        PARSER_VERSION = '2.0'
-    ) AS [result]
-
-
-
-SELECT
-     *
-FROM
-    OPENROWSET(
-        BULK 'https://olistdatastorageaccount.dfs.core.windows.net/olistdata/silver/',
-        FORMAT = 'PARQUET'
-    ) AS result1
-
---- https://olistdatastorageaccount.blob.core.windows.net/olistdata/silver
-
-
-
 create schema gold
 
-create view gold.final 
+CREATE view gold.final
 as 
+select
+    * 
+    FROM OPENROWSET(
+    BULK 'https://datalakeawstoragefor.dfs.core.windows.net/olisdata/silver/*.parquet',
+    FORMAT = 'PARQUET'
+) AS [result]
+where order_status = 'delivered'
+
+
+
+
 SELECT
-     *
-FROM
-    OPENROWSET(
-        BULK 'https://olistdatastorageaccount.dfs.core.windows.net/olistdata/silver/',
-        FORMAT = 'PARQUET'
-    ) AS result1
+top 100 *
+FROM OPENROWSET(
+    BULK 'https://datalakeawstoragefor.dfs.core.windows.net/olisdata/silver/*.parquet',
+    FORMAT = 'PARQUET'
+) AS [result];
 
 
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'Rushikesh@2001';
 
-select * from gold.final
-
-
-
-https://web.azuresynapse.net/en/authoring/analyze/sqlscripts/view%20final%202?workspace=%2Fsubscriptions%2F733a395f-9cf9-4ddd-a694-4070e3581376%2FresourceGroups%2Fecomm-live%2Fproviders%2FMicrosoft.Synapse%2Fworkspaces%2Folist-synapse
-
-
-
-
--- CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'd8TySvmWr4rPBUk';
--- CREATE DATABASE SCOPED CREDENTIAL mayankadmin WITH IDENTITY = 'Managed Identity';
+CREATE DATABASE SCOPED CREDENTIAL RushikeshAdmin
+WITH IDENTITY = 'Managed Identity';--created credentials
 
 -- select * from sys.database_credentials
+--DROP EXTERNAL FILE FORMAT ParquetFileFormat;
 
-CREATE EXTERNAL FILE FORMAT extfileformat WITH (
-    FORMAT_TYPE = PARQUET,
-    DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'
+
+-- Step 1: Create file format
+CREATE EXTERNAL FILE FORMAT ParquetFileFormat
+WITH (FORMAT_TYPE = PARQUET);
+
+
+-- Step 2: Create data source
+CREATE EXTERNAL DATA SOURCE MyDataLake
+WITH (
+    LOCATION = 'https://datalakeawstoragefor.dfs.core.windows.net/olisdata/gold',
+    CREDENTIAL = RushikeshAdmin
 );
 
-CREATE EXTERNAL DATA SOURCE goldlayer WITH (
-    LOCATION = 'https://olistdatastorageaccount.dfs.core.windows.net/olistdata/gold/',
-    CREDENTIAL = mayankadmin
-);
+-- Step 3: Use in CETAS
+CREATE EXTERNAL TABLE gold.delivered_orders
+WITH (
+    LOCATION = 'final_order/',--location name
+    DATA_SOURCE = MyDataLake,
+    FILE_FORMAT = ParquetFileFormat
+)
+AS
+SELECT * FROM gold.final
 
-
-CREATE EXTERNAL TABLE gold.finaltable WITH (
-        LOCATION = 'Serving',
-        DATA_SOURCE = goldlayer,
-        FILE_FORMAT = extfileformat
-) AS
-SELECT * FROM gold.final2;
-
-
-
-select * from gold.finaltable
-
-select * from gold.final2
 
 
 
