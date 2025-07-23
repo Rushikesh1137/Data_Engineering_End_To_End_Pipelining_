@@ -28,3 +28,13 @@ This is full-stack data engineering project built on Microsoft Azure. It demonst
 ## 📁 Repository Structure
 
 <img width="3437" height="1842" alt="image" src="https://github.com/user-attachments/assets/c921b9b6-53db-481b-96a5-001a28aec032" />
+
+<img width="1470" height="956" alt="Screenshot 2025-07-23 at 10 45 01 PM" src="https://github.com/user-attachments/assets/a6dbe99c-1be5-4255-ad3e-df62923ed49c" />
+### Pipeline
+
+<img width="1467" height="456" alt="Screenshot 2025-07-23 at 10 42 01 PM" src="https://github.com/user-attachments/assets/869624eb-8838-4d00-9b34-a4715f235989" />
+
+<img width="1467" height="456" alt="Screenshot 2025-07-23 at 10 42 01 PM" src="https://github.com/user-attachments/assets/ac8139f6-324c-49cb-b6cd-eab9c0bfb27d" />
+### Linked Services
+
+
